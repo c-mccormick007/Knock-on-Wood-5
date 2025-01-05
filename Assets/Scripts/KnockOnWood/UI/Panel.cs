@@ -43,15 +43,15 @@ namespace bandcProd.UIHelpers
         /// </summary>
         public void TogglePanel()
         {
+            Debug.Log(_isVisible);
             if (_currentAnimation != null)
             {
                 StopCoroutine(_currentAnimation);
             }
 
-            _isVisible = !_isVisible;
-
             if (_isVisible)
             {
+                Debug.Log("Moving to Screen");
                 _currentAnimation = StartCoroutine(MoveToPosition(_originalPosition));
             }
             else
@@ -63,13 +63,16 @@ namespace bandcProd.UIHelpers
         public void ToggleActivationFalse()
         {
             _isVisible = !_isVisible;
-            _self.SetActive(false);
+            TogglePanel();
         }
 
         public void ToggleActivationTrue()
         {
-            _isVisible = !_isVisible;
-            _self.SetActive(false);
+            _isVisible = true;
+            if (!_self)
+            {
+                _self.SetActive(true);
+            }
         }
 
         /// <summary>

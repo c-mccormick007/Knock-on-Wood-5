@@ -25,20 +25,7 @@ namespace bandcProd
         {
             OnConnectionStatusUpdate(null, FusionLauncher.ConnectionStatus.Disconnected, "");
         }
-		private void SetGameMode(GameMode gamemode)
-		{
-			_gameMode = gamemode;
-			if (GateUI(_uiMenu))
-				_uiMenu.ToggleActivationTrue();
-		}
 
-		private bool GateUI(Panel ui)
-		{
-			if (!ui.isVisible)
-				return false;
-			ui.ToggleActivationFalse();
-			return true;
-		}
 
 		private void OnConnectionStatusUpdate(NetworkRunner runner, FusionLauncher.ConnectionStatus status, string reason)
         {
@@ -89,8 +76,18 @@ namespace bandcProd
 					running = true;
 					break;
 			}
-
-			
 		}
-	}
+
+		public void PopulateMenuPanel()
+        {
+            _uiMenu.ToggleActivationTrue();
+            _uiMenu.TogglePanel();
+        }
+        public void PopulateMultiplayerPanel()
+        {
+            _uiMenu.ToggleActivationFalse();
+            _uiMultiplePlayerMenu.ToggleActivationTrue();
+            _uiMultiplePlayerMenu.TogglePanel();
+        }
+    }
 }
