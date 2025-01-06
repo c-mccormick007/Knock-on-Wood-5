@@ -5,8 +5,7 @@ using System.Collections.Generic;
 
 namespace bandcProd
 {
-    [RequireComponent(typeof(NetworkCharacterController))]
-    public class Player : FusionPlayer
+    public class Player : NetworkBehaviour
     {
         [SerializeField] private int _deadwood;
         [SerializeField] private int _finalScore;
@@ -21,14 +20,11 @@ namespace bandcProd
         [Networked] private int totalScore { get; set; }
         [Networked] public bool ready { get; set; }
 
-        private NetworkCharacterController _cc;
-
         private void Awake()
         {
-            _cc = GetComponent<NetworkCharacterController>();
         }
 
-        public override void InitNetworkState()
+        public override void Spawned()
         {
             deadwoodNet = 0;
             turnScore = 0;
