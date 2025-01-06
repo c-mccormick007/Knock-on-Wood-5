@@ -3,6 +3,7 @@ using FusionHelpers;
 using TMPro;
 using bandcProd.UIHelpers;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace bandcProd
 {
@@ -12,6 +13,11 @@ namespace bandcProd
         [SerializeField] private Panel _uiSinglePlayerMenu;
         [SerializeField] private Panel _uiMultiplePlayerMenu;
 		[SerializeField] private TextMeshProUGUI _progress;
+        [SerializeField] private string _room;
+        [SerializeField] private string _roomName;
+        [SerializeField] private FusionSession _gameManagerPrefab;
+        [SerializeField] private GameObject _gameManager;
+        [SerializeField] private INetworkSceneManager _sceneManager;
 
         private FusionLauncher.ConnectionStatus _status = FusionLauncher.ConnectionStatus.Disconnected;
         private GameMode _gameMode = GameMode.Shared;
@@ -19,14 +25,16 @@ namespace bandcProd
         private void Awake()
         {
             Application.targetFrameRate = 60;
-            DontDestroyOnLoad(this);
+            //DontDestroyOnLoad(this);
         }
         private void Start()
         {
             OnConnectionStatusUpdate(null, FusionLauncher.ConnectionStatus.Disconnected, "");
         }
 
-
+        public void OnEnterRoom()
+        {
+        }
 		private void OnConnectionStatusUpdate(NetworkRunner runner, FusionLauncher.ConnectionStatus status, string reason)
         {
             if (!this)
@@ -77,17 +85,20 @@ namespace bandcProd
 					break;
 			}
 		}
-
-		public void PopulateMenuPanel()
+        private bool GateUI(Panel ui)
+        {
+            if (!ui.isVisible)
+                return false;
+            return true;
+        }
+        public void PopulateMenuPanel()
         {
             _uiMenu.ToggleActivationTrue();
             _uiMenu.TogglePanel();
         }
         public void PopulateMultiplayerPanel()
         {
-            _uiMenu.ToggleActivationFalse();
-            _uiMultiplePlayerMenu.ToggleActivationTrue();
-            _uiMultiplePlayerMenu.TogglePanel();
+            SceneManager.LoadScene(1);
         }
     }
 }
