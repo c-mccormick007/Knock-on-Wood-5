@@ -11,6 +11,7 @@ namespace bandcProd
         [SerializeField] private int _finalScore;
         [SerializeField] private int _currentTurnScore;
 
+
         [SerializeField] private List<int> _hand = new List<int>();
         //[SerializeField] private List<Card> _hand = new List<Card>(); -implement cards
         [SerializeField] private List<Vector3> _cardPositions = new List<Vector3>();
