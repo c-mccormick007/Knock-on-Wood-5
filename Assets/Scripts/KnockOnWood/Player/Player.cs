@@ -1,36 +1,73 @@
-using UnityEngine;
 using Fusion;
-using FusionHelpers;
-using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
 
-namespace bandcProd
+public class PlayerController : NetworkBehaviour
 {
-    public class Player : NetworkBehaviour
+    private ReadyUpLobbyController readyController;
+    private Button readyButton;
+
+    public override void Spawned()
     {
-        [SerializeField] private int _deadwood;
-        [SerializeField] private int _finalScore;
-        [SerializeField] private int _currentTurnScore;
+        base.Spawned();
 
-
-        [SerializeField] private List<int> _hand = new List<int>();
-        //[SerializeField] private List<Card> _hand = new List<Card>(); -implement cards
-        [SerializeField] private List<Vector3> _cardPositions = new List<Vector3>();
-
-        [Networked] private int turnScore { get; set; }
-        [Networked] private int deadwoodNet { get; set; }
-        [Networked] private int totalScore { get; set; }
-        [Networked] public bool ready { get; set; }
-
-        private void Awake()
+        // Find the ReadyUpLobbyController in the scene
+        readyController = FindObjectOfType<ReadyUpLobbyController>();
+        if (readyController == null)
         {
+            Debug.LogError("PlayerController could not find ReadyUpLobbyController.");
         }
 
-        public override void Spawned()
+        if (Object.HasInputAuthority)
         {
-            deadwoodNet = 0;
-            turnScore = 0;
-            totalScore = 0;
-            ready = false;
+            // Assign the ready button
+            readyButton = GameObject.Find("PlayerReady").GetComponent<Button>();
+            if (readyButton != null)
+            {
+                readyButton.onClick.RemoveAllListeners();
+                readyButton.onClick.AddListener(ReadyUpButtonPressed);
+                Debug.Log("Assigned ReadyUpButton in PlayerController.");
+            }
+            else
+            {
+                Debug.LogWarning("ReadyUpButton not found in the scene.");
+            }
+        }
+    }
+
+    public void ReadyUpButtonPressed()
+    {
+        if (readyController == null)
+        {
+            Debug.LogWarning("ReadyUpLobbyController is null. Cannot send ready request.");
+            return;
+        }
+
+        Debug.Log("ReadyUpButtonPressed called.");
+
+        if (Object.HasStateAuthority)
+        {
+            Debug.Log("Player has State Authority. Toggling ready status directly.");
+            readyController.ToggleReadyStatus(Runner.LocalPlayer);
+        }
+        else
+        {
+            Debug.Log("Player does not have State Authority. Sending RPC to toggle ready status.");
+            RPC_RequestToggleReadyStatus(Runner.LocalPlayer);
+        }
+    }
+
+    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+    public void RPC_RequestToggleReadyStatus(PlayerRef player)
+    {
+        if (readyController != null && readyController.Object.HasStateAuthority)
+        {
+            readyController.ToggleReadyStatus(player);
+            Debug.Log($"RPC_RequestToggleReadyStatus called for {player}");
+        }
+        else
+        {
+            Debug.LogWarning("Received RPC_RequestToggleReadyStatus on a non-authoritative object.");
         }
     }
 }
