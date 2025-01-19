@@ -19,7 +19,10 @@ namespace bandcProd
         [SerializeField] NetworkObject clientPlayer;
 		[SerializeField] NetworkObject oppPlayer;
 
-
+        public override void Render()
+        {
+            Debug.Log("Current playstate: " + currentPlayState);
+        }
         public void StartGame()
         {
             currentPlayState = PlayState.GIN;
@@ -55,7 +58,11 @@ namespace bandcProd
 
         private void dealHands()
         {
-            deckManager.DrawCard(clientPlayer);
+            for(int i = 0; i < 10; i++)
+            {
+                deckManager.DrawCard(clientPlayer);
+                deckManager.DrawCard(oppPlayer);
+            }
         }
 
     }
