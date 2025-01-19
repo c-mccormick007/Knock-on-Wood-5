@@ -18,13 +18,35 @@ namespace bandcProd
 
 
         public void StartGame()
-		{
-			currentPlayState = PlayState.GIN;
+        {
+            currentPlayState = PlayState.GIN;
 
-			playerReady.SetActive(false);
-			oppReady.SetActive(false);	
-		}
+            if (clientPlayer == null)
+            {
+                foreach (var player in Runner.ActivePlayers)
+                {
+                    var networkObject = Runner.GetPlayerObject(player);
 
-	}
+                    if (networkObject != null)
+                    {
+                        if (player == Runner.LocalPlayer)
+                        {
+                            clientPlayer = networkObject.GetComponent<NetworkObject>();
+                            Debug.Log("Client Player Assigned: " + clientPlayer.name);
+                        }
+                        else
+                        {
+                            oppPlayer = networkObject.GetComponent<NetworkObject>();
+                            Debug.Log("Opponent Player Assigned: " + oppPlayer.name);
+                        }
+                    }
+                }
+            }
+            // Update the UI
+            playerReady.SetActive(false);
+            oppReady.SetActive(false);
+        }
+
+    }
 
 }

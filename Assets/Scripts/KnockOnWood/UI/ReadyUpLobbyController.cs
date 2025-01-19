@@ -22,6 +22,8 @@ namespace bandcProd
         public TextMeshProUGUI oppReadyUp;
         public Button readyButton;
 
+        private bool bothReady;
+
         [Networked][SerializeField] public NetworkDictionary<PlayerRef, bool> playerReadyStatus { get; }
 
         private Dictionary<PlayerRef, bool> localReadyStatus = new Dictionary<PlayerRef, bool>();
@@ -164,10 +166,11 @@ namespace bandcProd
             DetectChangesAndUpdateUI();
             UpdateNameVisuals();
 
-            if (AllPlayersReady())
+            if (AllPlayersReady() && !bothReady)
             {
                 Debug.Log("Both players are ready. Executing additional code...");
                 OnAllPlayersReady();
+                bothReady = true;
             }
         }
 
@@ -185,12 +188,21 @@ namespace bandcProd
 
         private void OnAllPlayersReady()
         {
-            Debug.Log("All players are ready! Starting the game...");
-            GameManager.StartGame();
+            if(GameManager.currentPlayState != GameManager.PlayState.GIN)
+            {
+                Debug.Log("All players are ready! Starting the game...");
+                GameManager.StartGame();
+            }
         }
 
         private void DetectChangesAndUpdateUI()
         {
+
+            if (bothReady)
+            {
+                return;
+            }
+
             Debug.Log("DetectChangesAndUpdateUI: Checking dictionary...");
             Debug.Log($"LocalPlayer is {Runner.LocalPlayer}");
 
