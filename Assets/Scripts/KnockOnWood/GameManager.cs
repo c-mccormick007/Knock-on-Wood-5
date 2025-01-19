@@ -14,6 +14,8 @@ namespace bandcProd
 		[SerializeField] GameObject oppReady;
         [SerializeField] GameObject readyUpControllerLobby;
 
+        [SerializeField] DeckManager deckManager;
+
         [SerializeField] NetworkObject clientPlayer;
 		[SerializeField] NetworkObject oppPlayer;
 
@@ -48,6 +50,12 @@ namespace bandcProd
             oppReady.SetActive(false);
             readyUpControllerLobby = GameObject.FindGameObjectWithTag("readycontroller");
             readyUpControllerLobby.SetActive(false);
+            dealHands();
+        }
+
+        private void dealHands()
+        {
+            deckManager.DrawCard(clientPlayer);
         }
 
     }

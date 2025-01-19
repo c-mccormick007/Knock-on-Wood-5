@@ -105,11 +105,14 @@ namespace bandcProd
             }
         }
 
-        public Card DrawCard()
+        public Card DrawCard(NetworkObject player)
         {
             if (deck.Count == 0) return null;
             Card drawnCard = deck[0];
             deck.RemoveAt(0);
+            
+            PlayerController playerController = player.GetComponent<PlayerController>();
+            playerController.hand.Add(drawnCard);
 
             if (Object.HasStateAuthority)
             {

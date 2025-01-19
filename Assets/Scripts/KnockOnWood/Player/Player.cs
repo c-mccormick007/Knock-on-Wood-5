@@ -1,4 +1,5 @@
 using Fusion;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +9,8 @@ namespace bandcProd
     {
         private ReadyUpLobbyController readyController;
         private Button readyButton;
+
+        public List<Card> hand = new List<Card>();
 
         public override void Spawned()
         {
