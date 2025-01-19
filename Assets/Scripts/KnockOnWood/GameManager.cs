@@ -12,8 +12,9 @@ namespace bandcProd
 
 		[SerializeField] GameObject playerReady;
 		[SerializeField] GameObject oppReady;
+        [SerializeField] GameObject readyUpControllerLobby;
 
-		[SerializeField] NetworkObject clientPlayer;
+        [SerializeField] NetworkObject clientPlayer;
 		[SerializeField] NetworkObject oppPlayer;
 
 
@@ -42,9 +43,11 @@ namespace bandcProd
                     }
                 }
             }
-            // Update the UI
+
             playerReady.SetActive(false);
             oppReady.SetActive(false);
+            readyUpControllerLobby = GameObject.FindGameObjectWithTag("readycontroller");
+            readyUpControllerLobby.SetActive(false);
         }
 
     }
