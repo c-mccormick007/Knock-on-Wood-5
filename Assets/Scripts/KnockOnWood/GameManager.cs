@@ -4,21 +4,18 @@ using FusionHelpers;
 
 namespace bandcProd
 {
-	public class GameManager : FusionSession
+	public class GameManager : NetworkBehaviour
 	{
 		public enum PlayState { LOBBY, LEVEL, END }
 		[Networked] public PlayState currentPlayState { get; set; }
 		[Networked, Capacity(2)] private NetworkArray<int> score => default;
 
-		protected override void OnPlayerAvatarAdded(FusionPlayer fusionPlayer)
+
+		public void StartGame()
 		{
-			Runner.Spawn(fusionPlayer);
+			//code here
 		}
 
-		protected override void OnPlayerAvatarRemoved(FusionPlayer fusionPlayer)
-		{
-			Debug.Log("Player removed");
-		}
 	}
 
 }
