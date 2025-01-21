@@ -6,8 +6,8 @@ namespace bandcProd
 {
 	public class GameManager : NetworkBehaviour
 	{
-		public enum PlayState { LOBBY, GIN, END }
-		[Networked] public PlayState currentPlayState { get; set; }
+        public enum PlayState { LOBBY, DEAL, TURN, DISCARD, CHECK_END, END }
+        [Networked] public PlayState currentPlayState { get; set; }
         [Networked, Capacity(2)] private NetworkArray<int> score => default;
 
 		[SerializeField] GameObject playerReady;
@@ -17,7 +17,12 @@ namespace bandcProd
         [SerializeField] DeckManager deckManager;
 
         [SerializeField] NetworkObject clientPlayer;
-		[SerializeField] NetworkObject oppPlayer;
+        [SerializeField] NetworkObject oppPlayer;
+
+        [Networked] public NetworkObject currentPlayer { get; set; }
+        [Networked] public NetworkObject otherPlayer { get; set; }
+        [Networked] private NetworkArray<int> discardPile { get; set; }
+        [Networked] private int topOfDeck { get; set; }
 
         public override void Render()
         {
@@ -25,7 +30,7 @@ namespace bandcProd
         }
         public void StartGame()
         {
-            currentPlayState = PlayState.GIN;
+
 
             if (clientPlayer == null)
             {
@@ -54,6 +59,11 @@ namespace bandcProd
             readyUpControllerLobby = GameObject.FindGameObjectWithTag("readycontroller");
             readyUpControllerLobby.SetActive(false);
             dealHands();
+
+
+            currentPlayer = clientPlayer;
+            otherPlayer = oppPlayer;
+            topOfDeck = deckManager.ReturnTopCard();
         }
 
         private void dealHands()

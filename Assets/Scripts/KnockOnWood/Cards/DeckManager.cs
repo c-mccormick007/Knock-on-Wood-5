@@ -105,6 +105,11 @@ namespace bandcProd
             }
         }
 
+        public int ReturnTopCard()
+        {
+            return DeckState[0];
+        }
+
         public Card DrawCard(NetworkObject player)
         {
             if (deck.Count == 0) return null;

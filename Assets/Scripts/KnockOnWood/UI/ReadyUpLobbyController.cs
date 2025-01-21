@@ -188,7 +188,7 @@ namespace bandcProd
 
         private void OnAllPlayersReady()
         {
-            if(GameManager.currentPlayState != GameManager.PlayState.GIN)
+            if(GameManager.currentPlayState == GameManager.PlayState.LOBBY)
             {
                 Debug.Log("All players are ready! Starting the game...");
                 GameManager.StartGame();
