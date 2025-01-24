@@ -27,7 +27,38 @@ namespace bandcProd
         public override void Render()
         {
             Debug.Log("Current playstate: " + currentPlayState);
+
+            switch (currentPlayState)
+            {
+                case PlayState.LOBBY:
+                    break;
+
+                case PlayState.DEAL:
+                    //dealHands();
+                    currentPlayState = PlayState.TURN;
+                    break;
+
+                case PlayState.TURN:
+                    if (currentPlayer.InputAuthority == Runner.LocalPlayer)
+                    {
+                        // Allow local player to draw/discard/declare Gin
+                    }
+                    break;
+
+                case PlayState.DISCARD:
+                    // Process discard and switch turns
+                    break;
+
+                case PlayState.CHECK_END:
+                    // Check for scores over win value
+                    break;
+
+                case PlayState.END:
+                    //EndGame();
+                    break;
+            }
         }
+
         public void StartGame()
         {
 
