@@ -21,7 +21,7 @@ namespace bandcProd
 
         [Networked] public NetworkObject currentPlayer { get; set; }
         [Networked] public NetworkObject otherPlayer { get; set; }
-        [Networked] private NetworkArray<int> discardPile { get; set; }
+        [Networked] private NetworkArray<int> discardPile { get; }
         [Networked] private int topOfDeck { get; set; }
 
         public override void Render()
